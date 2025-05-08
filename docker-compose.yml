@@ -9,3 +9,6 @@ services:
       - .:/app
       - ./staticfiles:/app/staticfiles
        - ./media:/app/media
+
+volumes:
+  static_volume:

@@ -28,10 +28,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']  # Change this to your domain or IP address in production
 
+# Removed misplaced 'DIRS' key
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',  # ¡Debe estar antes de 'django.contrib.admin'!
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inicio', # primer app 
     'directorio', # segunda app
+    'enlaces', # tercera app
+    
 ]
 
 MIDDLEWARE = [
@@ -57,7 +62,7 @@ ROOT_URLCONF = 'contraloria_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Global templates directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,6 +124,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -131,3 +139,33 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Configuración personalizada de Jazzmin
+JAZZMIN_SETTINGS = {
+    # Tema
+    "theme": "dark",
+    
+    # Colores principales
+    "colors": {
+        "primary": "#24356B",  # Azul oscuro
+        "secondary": "#B59E60",  # Dorado
+        "warning": "#751518",   # Rojo vino
+    },
+    
+    # Logo y branding
+    "site_logo": "media/img/escudo-umsnh.png",
+    "site_title": "Contraloría UMSNH",
+    "site_header": "Contraloría Universitaria",
+    
+    # Menú personalizado (opcional)
+    "topmenu_links": [
+        {"name": "Inicio", "url": "home", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+    ],
+}
+
+# Opcional: Iconos personalizados
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "brand_colour": "navbar-navy",
+}

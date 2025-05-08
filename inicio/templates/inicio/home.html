@@ -1,22 +1,137 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ pagina.titulo }}</title>
-</head>
-<body>
-    <h1>{{ pagina.titulo }}</h1>
-    <h2>Misión</h2>
-    <p>{{ pagina.mision }}</p>
-    <h2>Visión</h2>
-    <p>{{ pagina.vision }}</p>
-    <h2>Quiénes somos</h2>
-    <p>{{ pagina.quienes_somos }}</p>
-    {% if pagina.organigrama %}
-        <h2>Organigrama</h2>
-        <img src="{{ pagina.organigrama.url }}" alt="Organigrama" style="max-width: 100%;">
-    {% endif %}
-</body>
-</html>
+{% block title %}Inicio{% endblock %}
 
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Hero Section con color #B59E60 -->
+    <div class="py-5" style="background-color: #B59E60; color: white;">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">{{ pagina.titulo|default:"Bienvenido" }}</h1>
+            <p class="lead mb-0" style="font-size: 1.25rem;">Esta es la página principal de nuestro sitio web institucional</p>
+        </div>
+    </div>
+</div>
+     <!-- Banner Hero Section -->
+    {% if pagina.banner %}
+    <div class="hero-banner position-relative">
+        <img src="{{ pagina.banner.url }}" class="img-fluid w-100" alt="Banner institucional" style="max-height: 500px; object-fit: cover;">
+        {% if pagina.texto_banner %}
+        <div class="hero-text position-absolute bottom-0 start-0 p-4 text-white" style="background: rgba(0,0,0,0.5); width: 100%;">
+            <div class="container">
+                <h1 class="display-4 fw-bold">{{ pagina.texto_banner }}</h1>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <!-- Banner por defecto -->
+    <!-- <div class="bg-primary text-white py-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold">{{ pagina.titulo|default:"Bienvenido" }}</h1>
+            <p class="lead">Esta es la página principal de nuestro sitio web institucional</p>
+        </div>
+    </div> -->
+    {% endif %}
+   
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Misión y Visión en cards lado a lado -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Misión</h2>
+                        <p class="card-text fs-5">{{ pagina.mision }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Visión</h2>
+                        <p class="card-text fs-5">{{ pagina.vision }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiénes somos con acordeón para posible contenido extenso -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="mb-4">Quiénes somos</h2>
+                        <div class="accordion" id="aboutAccordion">
+                            <div class="accordion-item">
+                                <h3 class="accordion-header">
+                                    <button class="accordion-button fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAbout" aria-expanded="true">
+                                        Conoce más sobre nosotros
+                                    </button>
+                                </h3>
+                                <div id="collapseAbout" class="accordion-collapse collapse show" data-bs-parent="#aboutAccordion">
+                                    <div class="accordion-body">
+                                        <p class="fs-5">{{ pagina.quienes_somos }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organigrama con modal para ampliación -->
+        {% if pagina.organigrama %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <h2 class="mb-4">Organigrama Institucional</h2>
+                        <img src="{{ pagina.organigrama.url }}" alt="Organigrama" class="img-fluid rounded shadow" style="max-height: 500px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#organigramaModal">
+                        <p class="mt-2 text-muted">Haz clic en la imagen para ampliar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para organigrama -->
+        <div class="modal fade" id="organigramaModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Organigrama Completo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ pagina.organigrama.url }}" alt="Organigrama completo" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .hero-banner {
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .hero-banner img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.5s ease;
+    }
+    
+    .hero-banner:hover img {
+        transform: scale(1.02);
+    }
+    
+    .hero-text {
+        backdrop-filter: blur(2px);
+    }
+</style>
+{% endblock %}

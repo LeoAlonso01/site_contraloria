@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Enlaces de Interés</h2>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for enlace in enlaces %}
+        <div class="col">
+            <a href="{{ enlace.url }}" target="_blank" rel="noopener noreferrer"
+                class="card square-card h-100 text-decoration-none hover-shadow">
+                <div class="card-body text-center d-flex flex-column align-items-center justify-content-center">
+                    {% if enlace.imagen %}
+                    <img src="{{ enlace.imagen.url }}" alt="{{ enlace.nombre }}" class="img-fluid mb-3 enlace-img">
+                    {% else %}
+                    <i class="bi {{ enlace.icono|default:enlace.tipo_icono }} fs-1 mb-3 text-primary"></i>
+                    {% endif %}
+                    <h5 class="card-title text-dark">{{ enlace.nombre }}</h5>
+                </div>
+                <div class="card-footer bg-transparent text-center">
+                    <small class="text-muted">{{ enlace.get_tipo_display }}</small>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
