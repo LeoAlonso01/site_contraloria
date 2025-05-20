@@ -24,5 +24,6 @@ urlpatterns = [
     path('', include('inicio.urls')),
     path('directorio/', include('directorio.urls')),
     path('enlaces/', include('enlaces.urls')),  # Nueva línea para los enlaces
+    path('circulares/', include('circulares.urls')),  # Nueva línea para las circulares
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Para las imágenes
 

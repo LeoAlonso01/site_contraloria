@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'inicio', # primer app 
     'directorio', # segunda app
     'enlaces', # tercera app
+    'circulares.apps.CircularesConfig', # cuarta app
     
 ]
 

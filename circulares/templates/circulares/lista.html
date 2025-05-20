@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4" style="color: #24356B;">Circulares Institucionales</h1>
+    
+    {% for año in años %}
+    <div class="card mb-4 shadow-sm">
+        <!-- Cabecera del año (azul institucional #24356B) -->
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #24356B;">
+            <h3 class="mb-0">
+                <i class="bi bi-calendar-event me-2"></i>
+                Circulares Emitidas {{ año.anio }}
+            </h3>
+            <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#año{{ año.anio }}" style="background-color: #B59E60; color: white;">
+                <i class="bi bi-dash"></i>
+            </button>
+        </div>
+        
+        <div class="collapse show" id="año{{ año.anio }}">
+            <div class="card-body" style="background-color: #f8f9fa;">
+                <div class="row g-4">
+                    {% for mes in año.mes_set.all %}
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <!-- Cabecera del mes (rojo vino #751518) -->
+                            <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #751518;">
+                                <h4 class="mb-0">{{ mes.get_mes_display }}</h4>
+                                <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#mes{{ mes.id }}" style="background-color: #B59E60; color: white;">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="collapse show" id="mes{{ mes.id }}">
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        {% for circular in mes.circular_set.all %}
+                                        <!-- Items de circulares (hover dorado #B59E60) -->
+                                        <a href="{{ circular.archivo.url }}" target="_blank" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="border-left: 3px solid #B59E60;">
+                                            <span>
+                                                <strong style="color: #24356B;">Circular {{ circular.numero }}</strong><br>
+                                                <small class="text-muted">{{ circular.titulo }}</small>
+                                            </span>
+                                            <i class="bi bi-download" style="color: #751518;"></i>
+                                        </a>
+                                        {% empty %}
+                                        <div class="alert alert-info mb-0">
+                                            No hay circulares para este mes.
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning">
+        No hay circulares registradas aún.
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    /* Efecto hover para los items */
+    .list-group-item:hover {
+        background-color: rgba(181, 158, 96, 0.1);
+        border-left: 3px solid #24356B !important;
+    }
+    
+    /* Estilo para el botón de descarga */
+    .bi-download {
+        transition: transform 0.2s;
+    }
+    a:hover .bi-download {
+        transform: translateY(2px);
+        color: #B59E60 !important;
+    }
+</style>
+{% endblock %}

@@ -73,3 +73,27 @@ thead th {
 #toggle-dark-mode {
     background-color: var(--accent) !important;
 }
+
+/* Estilos para las cards cuadradas */
+.square-card {
+    aspect-ratio: 1/1;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.enlace-img {
+    max-height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Efecto hover para el texto */
+.square-card:hover .card-title {
+    color: #24356B !important;
+    text-decoration: underline;
+}
