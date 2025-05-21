@@ -18,6 +18,12 @@ class Noticia(models.Model):
     destacada = models.BooleanField(default=False)
     enlace_externo = models.URLField(blank=True)
     is_deleted = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)  # ✅ nuevo campo
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.titulo)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-fecha_publicacion']

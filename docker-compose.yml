@@ -1,6 +1,22 @@
 version: '3'
 
 services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: contraloria_db
+      POSTGRES_USER: contraloria_user
+      POSTGRES_PASSWORD: contraseña_segura_123!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contraloria_user -d contraloria_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   web:
     build: .
     ports:
@@ -8,7 +24,13 @@ services:
     volumes:
       - .:/app
       - ./staticfiles:/app/staticfiles
-       - ./media:/app/media
+      - ./media:/app/media
+    environment:
+      DATABASE_URL: postgres://contraloria_user:contraseña_segura_123!@db:5432/contraloria_db
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
+  postgres_data:
   static_volume:

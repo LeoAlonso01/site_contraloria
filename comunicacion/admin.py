@@ -7,12 +7,7 @@ class NoticiaAdmin(admin.ModelAdmin):
     list_filter = ('categoria', 'destacada')
     search_fields = ('titulo', 'contenido')
     # prepopulated_fields = {'slug': ('titulo',)}
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
     
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.titulo)
-        super().save(*args, **kwargs)
 
 @admin.register(Aviso)
 class AvisoAdmin(admin.ModelAdmin):
@@ -22,3 +17,7 @@ class AvisoAdmin(admin.ModelAdmin):
 @admin.register(RedSocial)
 class RedSocialAdmin(admin.ModelAdmin):
     list_display = ('plataforma', 'enlace')
+
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'color')

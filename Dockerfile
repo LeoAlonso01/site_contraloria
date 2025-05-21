@@ -1,22 +1,20 @@
-# imagen oficial de pyhton mas compatible
 FROM python:3.11-slim
 
-# Set the working directory in the container
+# Instala dependencias del sistema
+RUN apt-get update 
+
+# Establece el directorio de trabajo
 WORKDIR /app
 
-# Instala dependencias del sistema
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy the requirements file into the container at /app
+# Copia los archivos
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt  
 
-# Copy the rest of the application code into the container at /app
+# Instala dependencias de Python
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copia el resto del código
 COPY . .
-
 # Expose the port the app runs on
 EXPOSE 8000
 
