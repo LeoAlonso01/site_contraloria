@@ -1,14 +1,10 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #751518; font-size: 1.1rem;">
     <div class="container-fluid">
-        <!-- Logo UMSNH + Contraloría (visible en todas las pantallas) -->
+        <!-- Logo UMSNH + Contraloría -->
         <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}" style="margin-right: 0.5rem;">
             <div class="d-flex align-items-center">
-                <!-- Escudo UMSNH -->
-                <img src="{% static 'media/img/escudo-umsnh.png' %}" alt="Escudo UMSNH"
-                    style="height: 40px; margin-right: 10px;">
-
-                <!-- Logo Contraloría (texto o imagen) -->
+                <img src="{% static 'media/img/escudo-umsnh.png' %}" alt="Escudo UMSNH" style="height: 40px; margin-right: 10px;">
                 <span class="d-none d-lg-inline" style="font-size: 1rem; font-weight: 500; color: white;">
                     Contraloría Universitaria
                 </span>
@@ -18,39 +14,35 @@
             </div>
         </a>
 
-        <!-- Botón para móviles -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menú -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto"> <!-- ms-auto para alinear a la derecha -->
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link px-3 {% if request.path == '/' %}active{% endif %}"
-                        href="{% url 'home' %}">INICIO</a>
+                    <a class="nav-link px-3 {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">INICIO</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3 {% if 'directorio' in request.path %}active{% endif %}"
-                        href="{% url 'directorio' %}">DIRECTORIO</a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link px-3 {% if 'admin' in request.path %}active{% endif %}" href="{% url 'admin:index' %}">ADMINISTRACIÓN</a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link px-3 {% if 'enlaces' in request.path %}active{% endif %}"
-                        href="{% url 'enlaces' %}">ENLACES</a>
+                    <a class="nav-link px-3 {% if 'directorio' in request.path %}active{% endif %}" href="{% url 'directorio' %}">DIRECTORIO</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3 {% if 'circulares' in request.path %}active{% endif %}"
-                        href="{% url 'circulares' %}">CIRCULARES</a>
+                    <a class="nav-link px-3 {% if 'enlaces' in request.path %}active{% endif %}" href="{% url 'enlaces' %}">ENLACES</a>
+                </li>
+                <!-- Item para circulares -->
+                <li class="nav-item">
+                    <a class="nav-link px-3 {% if 'circulares' in request.path %}active{% endif %}" href="{% url 'circulares' %}">CIRCULARES</a>
+                </li>
+                <!-- Nuevo ítem para Comunicación -->
+                <li class="nav-item">
+                    <a class="nav-link px-3 {% if 'comunicacion' in request.path %}active{% endif %}" href="{% url 'comunicacion' %}">COMUNICACIÓN</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Breadcrumb compacto -->
+<!-- Breadcrumb actualizado -->
 <div class="container-fluid" style="background-color: #f8f9fa; margin-top: 12px; border-bottom: 1px solid #e9ecef;">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -59,17 +51,15 @@
                     <a href="{% url 'home' %}" class="text-decoration-none text-muted">Inicio</a>
                 </li>
                 {% if 'directorio' in request.path %}
-                <li class="breadcrumb-item active text-dark" aria-current="page">Directorio</li>
-                {% elif 'admin' in request.path %}
-                <li class="breadcrumb-item active text-dark" aria-current="page">Administración</li>
+                    <li class="breadcrumb-item active text-dark" aria-current="page">Directorio</li>
+                {% elif 'enlaces' in request.path %}
+                    <li class="breadcrumb-item active text-dark" aria-current="page">Enlaces</li>
+                {% elif 'circulares' in request.path %}
+                    <li class="breadcrumb-item active text-dark" aria-current="page">Circulares</li>
+                {% elif 'comunicacion' in request.path %}
+                    <li class="breadcrumb-item active text-dark" aria-current="page">Comunicación</li>
                 {% else %}
-                <li class="breadcrumb-item active text-dark" aria-current="page">Página Principal</li>
-                {% endif %}
-                {% if 'enlaces' in request.path %}
-                <li class="breadcrumb-item active text-dark" aria-current="page">Enlaces</li>
-                {% endif %}
-                {% if seccion_activa == 'circulares' %}
-                <li class="breadcrumb-item active text-dark" aria-current="page">Circulares</li>
+                    <li class="breadcrumb-item active text-dark" aria-current="page">Página Principal</li>
                 {% endif %}
             </ol>
         </nav>
@@ -77,32 +67,29 @@
 </div>
 
 <style>
-    /* Estilos del navbar */
+    /* Estilos mejorados */
     .navbar {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
     }
-
     .navbar:hover {
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
-
     .nav-link {
         font-weight: 500;
         letter-spacing: 0.5px;
         position: relative;
+        transition: all 0.3s ease;
     }
-
     .nav-link:hover {
         transform: translateY(-2px);
+        color: #B59E60 !important;
     }
-
     .nav-link.active {
         font-weight: 600;
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(181, 158, 96, 0.2) !important;
         border-radius: 4px;
     }
-
     .nav-link::after {
         content: '';
         position: absolute;
@@ -110,15 +97,12 @@
         height: 2px;
         bottom: 5px;
         left: 15px;
-        background-color: white;
+        background-color: #B59E60;
         transition: width 0.3s ease;
     }
-
     .nav-link:hover::after {
         width: calc(100% - 30px);
     }
-
-    /* Ajuste para fixed-top */
     body {
         padding-top: 56px;
     }

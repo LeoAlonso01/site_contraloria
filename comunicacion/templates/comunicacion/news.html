@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Slider de Noticias Destacadas -->
+    <div class="row g-0">
+        <div class="col-md-8">
+            <div id="noticiasSlider" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for noticia in noticias %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ noticia.imagen.url }}" class="d-block w-100" style="max-height: 500px; object-fit: cover;">
+                        <div class="carousel-caption" style="background: rgba(36, 53, 107, 0.8);">
+                            <h5>{{ noticia.titulo }}</h5>
+                            <p>{{ noticia.contenido|truncatechars:150 }}</p>
+                            <a href="{% url 'detalle_noticia' noticia.id %}" class="btn btn-sm" style="background-color: #B59E60;">Leer más</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#noticiasSlider" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#noticiasSlider" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Widget de Facebook -->
+        <div class="col-md-4 p-4" style="background-color: #f0f2f5;">
+            {% if facebook_widget %}
+                {{ facebook_widget|safe }}
+            {% else %}
+                <div class="alert alert-warning">
+                    Widget de Facebook no configurado
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Avisos Urgentes -->
+    <div class="container py-4">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Avisos Importantes</h4>
+            <div class="row">
+                {% for aviso in avisos %}
+                <div class="col-md-6 mb-3">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            {{ aviso.titulo }} {% if aviso.urgente %}<span class="badge bg-warning">URGENTE</span>{% endif %}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ aviso.contenido }}</p>
+                            <small class="text-muted">Válido hasta: {{ aviso.fecha_fin|date:"d/m/Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Contenido principal -->
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}" style="color: #751518;">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'comunicacion' %}" style="color: #751518;">Comunicación</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Noticia</li>
+                </ol>
+            </nav>
+
+            <!-- Card de noticia -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header" style="background-color: #24356B; color: white;">
+                    <h1 class="h3 mb-0">{{ noticia.titulo }}</h1>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge" style="background-color: #B59E60; color: white;">
+                            {{ noticia.categoria }}
+                        </span>
+                        <small class="text-muted">
+                            Publicado: {{ noticia.fecha_publicacion|date:"d/m/Y" }}
+                        </small>
+                    </div>
+
+                    {% if noticia.imagen %}
+                    <img src="{{ noticia.imagen.url }}" class="img-fluid rounded mb-4" alt="{{ noticia.titulo }}">
+                    {% endif %}
+
+                    <div class="content-text" style="color: #333;">
+                        {{ noticia.contenido|linebreaks }}
+                    </div>
+
+                    {% if noticia.enlace_externo %}
+                    <div class="mt-4">
+                        <a href="{{ noticia.enlace_externo }}" target="_blank" class="btn" style="background-color: #751518; color: white;">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>Enlace externo
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Otras noticias -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header" style="background-color: #24356B; color: white;">
+                    <h2 class="h5 mb-0">Más noticias</h2>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for n in noticias_relacionadas %}
+                    <a href="{% url 'detalle_noticia' n.slug %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" style="color: #24356B;">{{ n.titulo }}</h5>
+                            <small>{{ n.fecha_publicacion|date:"d/m/Y" }}</small>
+                        </div>
+                        <small class="text-muted">{{ n.categoria }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Avisos importantes -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header" style="background-color: #751518; color: white;">
+                    <h2 class="h5 mb-0">Avisos urgentes</h2>
+                </div>
+                <div class="card-body">
+                    {% for aviso in avisos_urgentes %}
+                    <div class="mb-3 pb-3 border-bottom">
+                        <h5 class="h6" style="color: #751518;">{{ aviso.titulo }}</h5>
+                        <p class="small">{{ aviso.contenido|truncatechars:100 }}</p>
+                        <small class="text-muted">Válido hasta: {{ aviso.fecha_fin|date:"d/m/Y" }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .content-text {
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+    .content-text img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .list-group-item:hover {
+        background-color: rgba(181, 158, 96, 0.1);
+        border-left: 3px solid #B59E60;
+    }
+</style>
+{% endblock %}
