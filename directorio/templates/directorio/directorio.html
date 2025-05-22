@@ -3,52 +3,121 @@
 
 {% block content %}
 <div class="container">
-    <!-- Encabezado mejorado -->
+    <!-- Encabezado -->
     <div class="text-center my-5">
-        <h1 class="display-4 fw-bold " style="color: #B59E60" >Directorio de Estructura Organizacional</h1>
-        <p class="lead">Conoce a nuestro equipo directivo</p>
-        <div class="border-bottom border-primary mx-auto" style="width: 100px;"></div>
+        <h1 class="display-4 fw-bold" style="color: #B59E60">Estructura Organizacional</h1>
+        <p class="lead">Contraloría Universitaria UMSNH</p>
+        <div class="border-bottom mx-auto" style="width: 100px; border-color: #751518 !important;"></div>
     </div>
 
-    <!-- Grid de jefaturas -->
-    <div class="row justify-content-center g-4">
+    <!-- Contralor (Jerarquía superior) -->
+    <div class="row justify-content-center mb-5">
         {% for jefa in jefaturas %}
-        <div class="col-lg-3 col-md-6">
-            <div class="card h-100 border-0 shadow-sm">
-                <!-- Imagen con placeholder -->
-                <div class="text-center pt-4">
-                    <img src="{% if jefa.imagen %}{{ jefa.imagen.url }}{% else %}{% static 'media/img/user.png' %}{% endif %}"
-                        class="rounded-circle img-thumbnail border-white" alt="{{ jefa.nombre }}"
-                        style="width: 140px; height: 140px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                </div>
-
-                <!-- Cuerpo de la tarjeta -->
-                <div class="card-body text-center pt-0">
-                    <h5 class="card-title mt-3 mb-1">{{ jefa.nombre }}</h5>
-                    <p class="text-muted mb-3">{{ jefa.nombramiento }}</p>
-
-                    <div class="d-flex flex-column align-items-center">
-                        <a href="mailto:{{ jefa.correo }}" class="text-decoration-none text-secondary mb-2">
-                            <i class="bi bi-envelope me-2"></i>{{ jefa.correo }}
-                        </a>
-                        <p class="text-secondary mb-3">
-                            <i class="bi bi-telephone me-2"></i>{{ jefa.telefono }}
-                        </p>
-
+            {% if 'Contralor' in jefa.nombramiento or 'Contralora' in jefa.nombramiento %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-lg" style="border-top: 5px solid #751518 !important;">
+                    <div class="text-center pt-4">
                         {% if jefa.cv %}
-                        <a href="{{ jefa.cv.url }}" class="btn btn-primary btn-sm rounded-pill px-3">
-                            <i class="bi bi-file-earmark-text me-1"></i> Ver CV
+                            {% if jefa.cv.url|lower|slice:'-4:' == '.pdf' %}
+                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" 
+                                     style="width:160px; height:160px; background-color:#f8f9fa; border:4px solid #B59E60;">
+                                    <i class="bi bi-file-earmark-pdf-fill fs-1" style="color: #751518;"></i>
+                                </div>
+                            {% else %}
+                                <img src="{{ jefa.cv.url }}" class="rounded-circle img-thumbnail" 
+                                     style="width:160px; height:160px; object-fit:cover; border:4px solid #B59E60;">
+                            {% endif %}
+                        {% else %}
+                            <img src="{% static 'media/img/user-default.png' %}" class="rounded-circle img-thumbnail"
+                                 style="width:160px; height:160px; object-fit:cover; border:4px solid #B59E60;">
+                        {% endif %}
+                    </div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title mb-1" style="color: #24356B;">{{ jefa.nombre }}</h3>
+                        <h5 class="text-uppercase mb-3" style="color: #751518;">{{ jefa.nombramiento }}</h5>
+                        
+                        <div class="d-flex flex-column align-items-center">
+                            <a href="mailto:{{ jefa.correo }}" class="text-decoration-none mb-2">
+                                <i class="bi bi-envelope me-2" style="color: #24356B;"></i>{{ jefa.correo }}
+                            </a>
+                            <p class="mb-3">
+                                <i class="bi bi-telephone me-2" style="color: #24356B;"></i>{{ jefa.telefono }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent text-center py-3">
+                        {% if jefa.cv %}
+                        <a href="{{ jefa.cv.url }}" class="btn btn-sm px-4" 
+                           style="background-color: #24356B; color: white;" download>
+                            <i class="bi bi-download me-1"></i> CV
                         </a>
                         {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
         {% endfor %}
     </div>
 
+    <!-- Línea jerárquica visual -->
+    <div class="text-center mb-4">
+        <div style="height: 50px; width: 2px; background-color: #B59E60; margin: 0 auto;"></div>
+        <i class="bi bi-arrow-down fs-4" style="color: #751518;"></i>
+    </div>
+
+    <!-- Jefaturas subordinadas -->
+    <div class="row justify-content-center g-4">
+        {% for jefa in jefaturas %}
+            {% if 'Contralor' not in jefa.nombramiento and 'Contralora' not in jefa.nombramiento %}
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="text-center pt-4">
+                        {% if jefa.cv %}
+                            {% if jefa.cv.url|lower|slice:'-4:' == '.pdf' %}
+                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" 
+                                     style="width:140px; height:140px; background-color:#f8f9fa; border:3px solid #B59E60;">
+                                    <i class="bi bi-file-earmark-pdf-fill fs-1" style="color: #751518;"></i>
+                                </div>
+                            {% else %}
+                                <img src="{{ jefa.cv.url }}" class="rounded-circle img-thumbnail" 
+                                     style="width:140px; height:140px; object-fit:cover; border:3px solid #B59E60;">
+                            {% endif %}
+                        {% else %}
+                            <img src="{% static 'media/img/user-default.png' %}" class="rounded-circle img-thumbnail"
+                                 style="width:140px; height:140px; object-fit:cover; border:3px solid #B59E60;">
+                        {% endif %}
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1" style="color: #24356B;">{{ jefa.nombre }}</h5>
+                        <p class="text-muted mb-3">{{ jefa.nombramiento }}</p>
+                        
+                        <div class="d-flex flex-column align-items-center">
+                            <a href="mailto:{{ jefa.correo }}" class="text-decoration-none text-secondary mb-2">
+                                <i class="bi bi-envelope me-2"></i>{{ jefa.correo }}
+                            </a>
+                            <p class="text-secondary mb-3">
+                                <i class="bi bi-telephone me-2"></i>{{ jefa.telefono }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent text-center py-3">
+                        {% if jefa.cv %}
+                        <a href="{{ jefa.cv.url }}" class="btn btn-sm px-3" 
+                           style="background-color: #24356B; color: white;" download>
+                            <i class="bi bi-download me-1"></i> CV
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
     <!-- Sección adicional opcional -->
-   <!--  <div class="text-center mt-5 pt-4 border-top">
+    <!--  <div class="text-center mt-5 pt-4 border-top">
         <h5 class="mb-3">¿Necesitas contactar con otra área?</h5>
         <a href="#" class="btn btn-outline-primary">Ver directorio completo</a>
     </div> -->
@@ -69,12 +138,25 @@
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
 
+    .text-muted {
+        color: #6c757d !important;
+    }
+
     .img-thumbnail {
         transition: all 0.3s ease;
     }
 
     .card:hover .img-thumbnail {
         transform: scale(1.05);
+    }
+
+    .pdf-icon-container {
+        transition: all 0.3s ease;
+    }
+
+    .pdf-icon-container:hover {
+        transform: scale(1.05);
+        background-color: #f0f2f5 !important;
     }
 </style>
 {% endblock %}
