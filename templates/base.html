@@ -27,6 +27,43 @@
     {% include 'includes/footer.html' %}
 </body>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecciona todos los botones que controlan colapsables
+    const buttons = document.querySelectorAll('[data-bs-toggle="collapse"]');
+
+    buttons.forEach(button => {
+        const targetSelector = button.getAttribute('data-bs-target');
+        const target = document.querySelector(targetSelector);
+        const icon = button.querySelector('i');
+
+        // Si no encuentra el target o el icono, salta
+        if (!target || !icon) return;
+
+        // Inicializa el icono según si está abierto al cargar
+        if (target.classList.contains('show')) {
+            icon.classList.remove('bi-plus');
+            icon.classList.add('bi-dash');
+        } else {
+            icon.classList.remove('bi-dash');
+            icon.classList.add('bi-plus');
+        }
+
+        // Escucha los eventos de colapso de Bootstrap
+        target.addEventListener('shown.bs.collapse', () => {
+            icon.classList.remove('bi-plus');
+            icon.classList.add('bi-dash');
+        });
+
+        target.addEventListener('hidden.bs.collapse', () => {
+            icon.classList.remove('bi-dash');
+            icon.classList.add('bi-plus');
+        });
+    });
+});
+</script>
+
+
 </html>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous"
