@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-batt)qjfwnl%0tgt7n4+l(fys47cond!#mmocv!x_g=c2i&#2-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # Change this to your domain or IP address in production
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '148.216.111.63'] # Change this to your domain or IP address in production
 
 # Removed misplaced 'DIRS' key
 
